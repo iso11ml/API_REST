@@ -12,14 +12,4 @@ class Articles(BaseModel):
     title: str
     description: str
     date: str
-    user_id: ObjectId
-
-    @validator('user_id', pre=True)
-    def user_id_to_str(cls, v):
-        return str(v)
-
-    @validator('user_id')
-    def user_id_is_valid(cls, v):
-        if not isinstance(v, ObjectId):
-            raise ValueError('user_id debe ser un ObjectId válido')
-        return v
+    user_id: str

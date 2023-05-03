@@ -19,13 +19,17 @@ async def getUsers():
 @usersRouter.get("/getUser/{email}/{password}")
 async def getUser(email: str, password: str):
     try:
-        connection = MongoDBConnection.getInstance()
-        db = connection.get_database() 
         user = db.Usuario.find_one({"email": email, "password": password})
         if user:
-            return {"name": user["name"], "email": user["email"], "password": user["password"]}
+            return {
+                "_id": str(user["_id"]),
+                "name": user["name"],
+                "email": user["email"],
+                "password": user["password"]
+            }
         else:
             return {"message": "Credenciales incorrectas"}
+        
     except Exception as e:
         print(f'Error al procesar la solicitud: {e}')
 
