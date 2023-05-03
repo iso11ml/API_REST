@@ -13,7 +13,7 @@ class MongoDBConnection:
     def __init__(self):
         """ Virtually private constructor. """
         if MongoDBConnection.__instance != None:
-            raise Exception("This class is a singleton!")
+            raise Exception("Esta clase es singleton!")
         else:
             MongoDBConnection.__instance = self
             self.client = MongoClient('localhost', 27017)
