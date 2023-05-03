@@ -17,7 +17,7 @@ class MongoDBConnection:
         else:
             MongoDBConnection.__instance = self
             self.client = MongoClient('localhost', 27017)
-            self.db = self.client['mydatabase']
+            self.db = self.client['test']
     
     def get_database(self):
         return self.db

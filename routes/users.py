@@ -1,16 +1,32 @@
 from fastapi import APIRouter
-from data_base import MongoDBConnection
+from bson import json_util
+from data_base.mongoDB import MongoDBConnection
 
-User = APIRouter()
-word  = 'No'
+usersRouter  = APIRouter()
 
-@User.get("/")
-async def getUser():
+
+@usersRouter.get("/getAllUsers/")
+async def getUsers():
     try:
-        conection = MongoDBConnection.getInstance().get_database()
-        word = 'Ok'
-    except Exception:
-        print(f'Conexion Fallida')
+        connection = MongoDBConnection.getInstance()
+        db = connection.get_database()
+        users = db.Employees.find()
+        # Convertir los documentos a una lista
+        users_json = json_util.dumps(users)
+        return {"users": users_json}
+    except Exception as e:
+        print(f'Error al conectar a la base de datos: {e}')
 
-    return {"message": "Mi Primer EndPoint"}
+
+@usersRouter.get("/getUserPassword/{id}")
+async def getUserPassword():
+    try:
+        connection = MongoDBConnection.getInstance()
+        db = connection.get_database() 
+        users = db.Employees.find()
+        # Convertir los documentos a una lista
+        users_json = json_util.dumps(users)
+        return {"users": users_json}
+    except Exception as e:
+        print(f'Error al procesar la solicitud: {e}')
 
