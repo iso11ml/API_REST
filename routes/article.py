@@ -1,3 +1,4 @@
+import datetime
 import json
 from fastapi import APIRouter, HTTPException
 from bson import ObjectId, json_util
@@ -13,6 +14,8 @@ db = connection.get_database()
 @articlesRouter.post("/newArticle")
 async def createArticle(article: Articles):
     new_article = dict(article)
+    new_article["likesUserID"] = []
+    new_article["date"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     result = db.Articulos.insert_one(new_article)
     return str(result.inserted_id)
 
@@ -33,3 +36,28 @@ async def getOtherArticles(user_id: str):
           return articlesEntity(articles)
     except Exception as e:
         return {"message": "Error al obtener los artículos del usuario."}
+    
+
+    
+# Me gusta en los articulos
+from fastapi import HTTPException
+
+@articlesRouter.post("/likeArticle/{article_id}/{user_id}")
+async def likeArticle(article_id: str, user_id: str):
+    article = db.Articulos.find_one({"_id": ObjectId(article_id)})
+    
+    if not article:
+        raise HTTPException(status_code=404, detail="Artículo no encontrado")
+
+    if user_id not in article["likesUserID"]:
+        db.Articulos.update_one(
+            {"_id": ObjectId(article_id)},
+            {"$push": {"likesUserID": user_id}}
+        )
+    else:
+        db.Articulos.update_one(
+            {"_id": ObjectId(article_id)},
+            {"$pull": {"likesUserID": user_id}}
+        )
+
+    return {"message": "Like actualizado"}
