@@ -77,5 +77,4 @@ async def get_articles():
         article_dict = article.copy()
         article_dict['idObject'] = str(article_dict.pop('_id'))
         articles.append(Articles(**article_dict))
-        print({"articles": articles})
     return {"articles": articles}
