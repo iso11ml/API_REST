@@ -5,9 +5,11 @@ from bson import ObjectId
 from pydantic import BaseModel, validator
 
 class Articles(BaseModel):
+    idObject: Optional[str]
     title: str
     description: str
     date: Optional[str] = None
     user_id: Optional[str]
     likesUserID: Optional[List[str]]
     comments: Optional[List[Comment]] = []
+

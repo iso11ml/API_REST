@@ -1,10 +1,11 @@
+from ast import List
 import datetime
 import json
 from fastapi import APIRouter, HTTPException
 from bson import ObjectId, json_util
 from data_base.mongoDB import MongoDBConnection
 from schemas.article import articlesEntity, articlesEntity
-from models.article import Articles
+from models.article import  Articles
 
 articlesRouter  = APIRouter()
 connection = MongoDBConnection.getInstance()
@@ -63,9 +64,18 @@ async def likeArticle(article_id: str, user_id: str):
     return {"message": "Like actualizado"}
 
 # Obtiene todos los articulos
+# @articlesRouter.get("/getAllArticles")
+# async def get_articles():
+#     articles = []
+#     for article in db.Articulos.find():
+#         articles.append(Articles(**article))
+#     return {"articles": articles}
 @articlesRouter.get("/getAllArticles")
 async def get_articles():
     articles = []
     for article in db.Articulos.find():
-        articles.append(Articles(**article))
+        article_dict = article.copy()
+        article_dict['idObject'] = str(article_dict.pop('_id'))
+        articles.append(Articles(**article_dict))
+        print({"articles": articles})
     return {"articles": articles}

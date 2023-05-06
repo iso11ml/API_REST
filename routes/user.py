@@ -29,6 +29,14 @@ async def getUser(email: str, password: str):
     except Exception as e:
         print(f'Error al procesar la solicitud: {e}')
 
+# Obtiene el nombre del usuario a partir del email
+@usersRouter.get("/getName/{id}", response_model=str)
+async def get_name(id: str):
+    user = db.Usuario.find_one({"_id": ObjectId(id)})
+    if user:
+        return user["name"]
+    return " "
+
 # Crear un nuevo usuario
 @usersRouter.post("/newUser", response_model = User)
 async def createUser(user: User):
@@ -41,3 +49,11 @@ async def createUser(user: User):
     created_user["_id"] = str(result.inserted_id)
     return created_user
 
+# Obtiene el id del usuario a partir del email
+@usersRouter.get("/getUserIDByEmail/{email}", response_model=str)
+async def get_user_id_by_email(email: str):
+    user = db.Usuario.find_one({"email": email})
+    if user:
+        return str(user["_id"])
+    else:
+        raise HTTPException(status_code=404, detail="User not found")
