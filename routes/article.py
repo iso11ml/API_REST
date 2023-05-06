@@ -61,3 +61,11 @@ async def likeArticle(article_id: str, user_id: str):
         )
 
     return {"message": "Like actualizado"}
+
+# Obtiene todos los articulos
+@articlesRouter.get("/getAllArticles")
+async def get_articles():
+    articles = []
+    for article in db.Articulos.find():
+        articles.append(Articles(**article))
+    return {"articles": articles}
