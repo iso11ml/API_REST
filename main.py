@@ -19,9 +19,10 @@ app.include_router(commentRouter)
 
 
 origins = [
-    "http://localhost",
-    "http://localhost:8000",
-    "http://172.25.144.1:8000", 
+    # "http://localhost",
+    # "http://localhost:8000",
+    # "http://172.25.144.1:8000", 
+    "*"
 ]
 
 app.add_middleware(

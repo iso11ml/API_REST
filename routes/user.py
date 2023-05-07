@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException
-from bson import ObjectId, json_util
+from bson import ObjectId
 from data_base.mongoDB import MongoDBConnection
-from schemas.user import userEntity, usersEntity
+from schemas.user import  usersEntity
 from models.user import User
 
 usersRouter  = APIRouter()
@@ -64,6 +64,7 @@ async def get_name(id: str):
 
 @usersRouter.post("/newUser", response_model=User)
 async def create_user(user: User):
+    print("Ok")
     new_user = dict(user)
     existing_user = db.Usuario.find_one({"email": new_user["email"]})
     if existing_user:
