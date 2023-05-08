@@ -64,7 +64,6 @@ async def get_name(id: str):
 
 @usersRouter.post("/newUser", response_model=User)
 async def create_user(user: User):
-    print("Ok")
     new_user = dict(user)
     existing_user = db.Usuario.find_one({"email": new_user["email"]})
     if existing_user:

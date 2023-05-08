@@ -16,7 +16,9 @@ class MongoDBConnection:
             raise Exception("Esta clase es singleton!")
         else:
             MongoDBConnection.__instance = self
-            self.client = MongoClient('mongodb+srv://oungrad:1234@cluster1.ybiipux.mongodb.net/?retryWrites=true&w=majority')
+            # self.client = MongoClient('mongodb+srv://oungrad:1234@cluster1.ybiipux.mongodb.net/?retryWrites=true&w=majority')
+            self.client = MongoClient('localhost', 27017)
+
             self.db = self.client['test']
     
     def get_database(self):
